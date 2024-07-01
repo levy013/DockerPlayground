@@ -143,3 +143,86 @@ CMD node index.js
 8. Run container 
 9. ??? 
 10. Profit
+
+<hr/>
+
+### Quick Start (WINDOWS)
+
+1. Install Express => `npm i express`
+2. Create package.json => `npm init -y`
+``` javascript
+	{
+	
+	  "name": "docker-demo-windows",
+	
+	  "version": "1.0.0",
+	
+	  "description": "",
+	
+	  "main": "index.js",
+	
+	  "scripts": {
+	
+	    "start": "node index.js"
+	
+	  },
+	
+	  "keywords": [],
+	
+	  "author": "",
+	
+	  "license": "ISC",
+	
+	  "dependencies": {
+	
+	    "express": "^4.19.2"
+	
+	  }
+	
+	}
+```
+3. Create `index.js`
+``` javascript
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.json({
+    "Docker-Demo-Windows": "Hello World!"
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+``` 
+4. Create `.dockerignore` and add `node_modules` folder
+5. Create `Dockerfile` 
+``` dockerfile
+# Set the base image to use for any subsequent instructions that follow and also give this build stage a name.
+
+# For default node app, 'node' base image is probably fine -- may want to specify version though instead of defaulting to 'slim'
+
+# https://hub.docker.com/_/node/tags
+FROM stefanscherer/node-windows:pure
+
+# Define working directory
+WORKDIR /app 
+
+# Copy source => destination
+COPY . /app
+
+# Since we've added the node_modules folder to the .dockerignore, we need to reinstall
+RUN npm install
+
+# Tells the application what port to use
+EXPOSE 3000
+
+# Launch
+CMD node index.js
+```
+6. Login to Docker via terminal
+7. Build Image
+   
+Steps 8 - 10 pending
